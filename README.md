@@ -18,7 +18,7 @@ Projects pin their own runtime versions; the global mise config is only the fall
 ## New Mac
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/uedaeita/dotfiles/main/bootstrap.sh | bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/uedaeita/dotfiles/main/bootstrap.sh)"
 ```
 
 Then follow the checklist it prints.
