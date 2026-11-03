@@ -48,11 +48,11 @@ clone_repos() {
   clone_if_missing "$DOTFILES_URL" "$DOTFILES_DIR"
 }
 
-# nix-darwin refuses to overwrite these; the originals are kept next to them.
+# nix-darwin refuses to overwrite these (nix.custom.conf comes from the Determinate installer); the originals are kept next to them.
 move_etc_shell_files() {
-  step "/etc shell files"
+  step "/etc files managed by nix-darwin"
   local f
-  for f in /etc/zshrc /etc/bashrc /etc/zshenv; do
+  for f in /etc/zshrc /etc/bashrc /etc/zshenv /etc/nix/nix.custom.conf; do
     if [[ -f "$f" && ! -L "$f" ]]; then
       sudo mv "$f" "$f.before-nix-darwin"
     fi
@@ -62,6 +62,8 @@ move_etc_shell_files() {
 switch_darwin() {
   step "nix-darwin switch"
   sudo nix run nix-darwin -- switch --flake "$DOTFILES_DIR#$HOST"
+  # Later steps (chezmoi, its mise script) need the freshly linked user profile.
+  export PATH="/etc/profiles/per-user/$USER/bin:$PATH"
 }
 
 apply_chezmoi() {
@@ -71,7 +73,7 @@ apply_chezmoi() {
     mkdir -p "$(dirname "$config")"
     printf 'sourceDir = "%s"\n' "$DOTFILES_DIR" >"$config"
   fi
-  "/etc/profiles/per-user/$USER/bin/chezmoi" apply
+  chezmoi apply
 }
 
 print_manual_steps() {
