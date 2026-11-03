@@ -1,0 +1,14 @@
+typeset -gU path fpath
+
+[[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Prepended after brew shellenv so Nix (GNU sed, coreutils, ...) wins over Homebrew and /usr/bin.
+path=("/etc/profiles/per-user/$USER/bin" /run/current-system/sw/bin $path)
+
+export EDITOR=vim VISUAL=vim PAGER=less
+export LANG="${LANG:-en_US.UTF-8}"
+
+export PNPM_HOME="$HOME/Library/pnpm"
+path=("$HOME/.local/bin" "$PNPM_HOME" $path)
+
+if [[ -r "$HOME/.orbstack/shell/init.zsh" ]]; then source "$HOME/.orbstack/shell/init.zsh"; fi

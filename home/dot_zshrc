@@ -1,0 +1,39 @@
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+setopt extended_history hist_ignore_all_dups hist_ignore_space hist_reduce_blanks share_history
+
+nix_share="/etc/profiles/per-user/$USER/share"
+
+zcache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+[[ -d "$zcache" ]] || mkdir -p "$zcache"
+autoload -Uz compinit
+compinit -d "$zcache/zcompdump"
+
+[[ -r "$nix_share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] &&
+  source "$nix_share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+(( $+commands[fzf] )) && source <(fzf --zsh)
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+
+if (( $+commands[brew] )); then
+  gcloud_sdk="$(brew --prefix)/share/google-cloud-sdk"
+  [[ -r "$gcloud_sdk/path.zsh.inc" ]] && source "$gcloud_sdk/path.zsh.inc"
+  [[ -r "$gcloud_sdk/completion.zsh.inc" ]] && source "$gcloud_sdk/completion.zsh.inc"
+  unset gcloud_sdk
+fi
+
+alias docker-compose="docker compose"
+export SAM_CLI_TELEMETRY=0
+ulimit -n 12800
+
+# Must be sourced after every other plugin that wraps widgets.
+[[ -r "$nix_share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] &&
+  source "$nix_share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+unset nix_share zcache
+
+if [[ -r "$HOME/.zshrc.local" ]]; then source "$HOME/.zshrc.local"; fi
