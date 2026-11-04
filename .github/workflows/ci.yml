@@ -11,18 +11,18 @@ jobs:
   darwin-build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: actions/checkout@v7.0.1
+      - uses: DeterminateSystems/determinate-nix-action@v3.24.1
       - run: nix flake check
       - run: nix run nix-darwin -- build --flake .#pollock
 
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: shellcheck bootstrap.sh
