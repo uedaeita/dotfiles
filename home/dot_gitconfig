@@ -1,0 +1,15 @@
+[user]
+	name = uedaeita
+	email = eitaro.ueda@gmail.com
+[core]
+	editor = vim
+[fetch]
+	prune = true
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
+[init]
+	defaultBranch = main
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/

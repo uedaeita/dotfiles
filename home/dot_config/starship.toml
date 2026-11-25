@@ -1,0 +1,19 @@
+command_timeout = 1000
+scan_timeout = 100
+
+[aws]
+format = 'on [$symbol$profile]($style) '
+disabled = true
+
+[docker_context]
+disabled = true
+
+[gcloud]
+format = 'on [$symbol$project]($style) '
+disabled = true
+
+[nodejs]
+disabled = true
+
+[ruby]
+disabled = true

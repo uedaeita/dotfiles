@@ -1,0 +1,10 @@
+[settings]
+idiomatic_version_file_enable_tools = ["node", "terraform"]
+
+[tools]
+go = "1.27.3"
+node = "26.13.0"
+pnpm = "12.17.0"
+python = "3.15.2"
+terraform = "1.17.1"
+yarn = "1.22.22"
